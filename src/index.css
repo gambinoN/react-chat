@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+li {
+    text-decoration: none;
+    padding: 1rem;
+}
+
+#nav {
+    background-color: #171b1d;
+    border-color: #37373b;
+}
+
+.message {
+    padding: 16px;
+    margin: 8px;
+    max-width: 25%;
+    display: flex;
+    flex-direction: row;
+    word-wrap: break-word;
+}
+  
+  .sent {
+    background-color: #48a6c3; /* Your desired style for sent messages */
+    text-align: right;
+    margin-left: auto;
+    margin-right: 3rem;
+  }
+  
+  .received {
+    background-color: #252b2e; /* Your desired style for received messages */
+    text-align: left;
+    margin-left: 3rem;
+  }
+
+#room {
+    background-color: #171b1d;
+    border-color: #37373b;
+}
+
+#card {
+    background-color: rgb(197, 195, 195);
+    border-radius: 25px;
+    padding-bottom: 5rem;
+}
+
+.lol {
+    background-color: #202426;
+}
+
+input {
+    background-color: #202426;
+    border-color: #37373b;
+    color: #37373b;
+}
+
+#side {
+    background-color: #171b1d;
+    border-color: #37373b;
+}
+
+.w {
+    width: calc(100% - 9rem) ;
+}
+
+.home h1 {
+    font-size: larger;
+}
+
+#login {
+    border-color: #37373b;
+}
+
+#btn:hover {
+    cursor: pointer;
+    border-radius: 9999px;
+    background-color: whitesmoke;
+}
+
+#bg {
+    background-color: #0a0e0f;
+    height: calc(100% - 10rem);
+}
+
+#back, #back1 {
+    background-color: #0a0e0f;
+}
+
+img {
+    height: 60px;
+    width: 60px;
+}
