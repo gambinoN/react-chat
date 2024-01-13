@@ -18,6 +18,15 @@ const Chat = ({user}) => {
     return `${sortedNames[0]}_${sortedNames[1]}`;
   };
 
+     const chatContainerRef = useRef(null);
+
+  useEffect(() => {
+    // Scroll to the bottom of the chat container whenever messages update
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   useEffect(() => {
     const roomIdValue = generateRoomId(user.username, username);
     setRoomId(roomIdValue)
@@ -119,7 +128,7 @@ const Chat = ({user}) => {
                         </span>
             <button type="submit"><FontAwesomeIcon icon={faPaperPlane} size="2xl" style={{color: "#ffffff",}} /></button>
         </form>
-        <div className="w-[80%] mx-auto mb-10 font-custom overflow-y-auto">   
+        <div ref={chatContainerRef} className="w-[80%] mx-auto mb-10 font-custom overflow-y-auto">   
 
         {messages.map((message, index) => (
             <>
