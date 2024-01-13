@@ -1,55 +1,44 @@
-import React from 'react'
-import NavBar from './sidebar-components/NavBar';
+import React, { Suspense, lazy } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Contact from './home-components/Contact';
-import { useState, useEffect } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './firebase-components/firebase';
-import PleaseLogin from './home-components/PleaseLogin';
-import Home from './home-components/Home';
-import SideBar from './sidebar-components/SideBar';
-import ChatRoom from './chat-components/ChatRoom';
+import * as ROUTES from './constants/routes'
+import useAuthListener from './hooks/use-auth-listener';
+import UserContext from './context/user';
+
+import ProtectedRoute from './helpers/protected.route';
+
+const Welcome = lazy(() => import('./pages/welcome'))
+const Login = lazy(() => import('./pages/login'))
+const SignUp = lazy(() => import('./pages/sign-up'))
+const Dashboard = lazy(() => import('./pages/dashboard'))
+const ChatRoom = lazy(() => import('./pages/chat-room'))
+const GroupChat = lazy(() => import('./pages/group-chat'))
 
 function App() {
-  const [user, setUser] = useState(null);
-  
-  useEffect(() => {
-      // Add an observer to listen to the authentication state changes
-      const unsubscribe = onAuthStateChanged(auth, (user) => {
-        setUser(user);
-      });
-  
-      // Unsubscribe the observer when the component unmounts
-      return () => unsubscribe();
-    }, []);
-
-    if (!user) {
-      // Handle the case where currentUser is not yet available
-      return (
-        <div className='flex flex-row relative'>
-          <Router>
-            <NavBar />
-            <SideBar />
-            <PleaseLogin />
-          </Router>
-         
-        </div>
-      )
-    }
+  const {user} = useAuthListener()
 
   return (
-    <div className='flex flex-row'>
-   
+    <UserContext.Provider value={{ user }}>
       <Router>
-        <NavBar />  
-        <SideBar />
+        <Suspense fallback={<p>Loading..</p>}>
         <Routes>
-          <Route path='/'  exact element={<Home />} />
-          <Route path='/contact' element={<Contact />} />
-          <Route path="/chat/:roomId" element={<ChatRoom currentUser={user} />} />
+          <Route path={ROUTES.WELCOME} element={<Welcome />} />
+          <Route path={ROUTES.LOGIN} element={<Login />} />
+          <Route
+            exact
+            path={ROUTES.DASHBOARD}
+            element={
+              <ProtectedRoute user={user}>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
+          <Route path='/chat/:username' element={<ChatRoom user={user} />} />
+          <Route path='/group' element={<GroupChat user={user} />} />
         </Routes>
+        </Suspense>
       </Router>  
-    </div>
+    </UserContext.Provider>
   );
 }
 
