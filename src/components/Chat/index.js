@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { doesRoomExist } from "../../services/firebase";
 import FirebaseContext from "../../context/firebase";
